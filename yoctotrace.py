@@ -2,7 +2,7 @@
 '''
     yoctotrace.py: Linux kernel ftrace wrapper for tracing 
                    a particular Linux kernel module.
-    
+
     This utility provides a wrapper to Linux's debugfs.  Since the latter
     filesystem is being manipulated this tool should be run with appropriate
     privileges.
@@ -110,7 +110,10 @@ if __name__ == '__main__':
     args = parse.parse_args()
 
     # Check argument sanity
-    if (args.count or args.callgraph) and args.module == None:
+    if len(sys.argv) == 1:
+	parse.print_help()
+	sys.exit(0)
+    elif (args.count or args.callgraph) and args.module == None:
         print('A module to trace must be specified')
         sys.exit(-1)
     elif (args.count or args.callgraph) and args.stop == True:
