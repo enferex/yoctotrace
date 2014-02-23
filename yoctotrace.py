@@ -45,16 +45,17 @@ class Tracer(object):
         self.module = module
         self.ftrace_name = ftrace_name
 
-        # Enable the tracer (echo trace_name > debugfs/current_tracer)
-        call_cmd(self.path, 'current_tracer', self.ftrace_name)
-
         # Set the filter (echo ':mod:somemodule' > debugfs/set_function_filter)
-        call_cmd(self.path, 'set_function_filter', ':mod:'+self.module)
+	if module:
+	    call_cmd(self.path, 'set_ftrace_filter', '\':mod:'+self.module+'\'')
+
+	# Enable the tracer (echo trace_name > debugfs/current_tracer)
+        call_cmd(self.path, 'current_tracer', self.ftrace_name)
 
         # Enable counts if we have no tracer
         # (echo 1 > debugfs/function_profile_enabled)
-        if self.ftrace_name == 'nop':
-            call_cmd(self.path, 'function_profile_enabled', 1)
+        call_cmd(self.path, 'function_profile_enabled',
+                 int(self.ftrace_name == 'nop'))
         
 
 # Send a command to the shell
@@ -142,6 +143,5 @@ if __name__ == '__main__':
         if args.count:
             Tracer("Enabling callgraph trace",
                    debugfs_path=path,
-                   ftrace_name='nop',
-                   module=args.module[0])
+                   ftrace_name='nop')
         toggle_trace(path, 1)
