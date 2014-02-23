@@ -87,7 +87,9 @@ def dump_results(path):
             break
     print('Dumping results to ' + fname)
     cmd = 'cat ' + os.path.join(path, 'trace') + ' > ' + fname
+    subprocess.call(cmd, shell=True)
     cmd = 'cat ' + os.path.join(path, 'trace_stat/function*') + ' >> ' + fname
+    subprocess.call(cmd, shell=True)
 
 
 
