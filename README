@@ -1,0 +1,36 @@
+yoctotrace.py: Linux kernel ftrace wrapper for tracing 
+               a particular Linux kernel module.
+
+This utility provides a wrapper to Linux's debugfs.  Since the latter
+filesystem is being manipulated this tool should be run with appropriate
+privileges.
+
+Yes, there are other tools like this (trace-cmd); however, I want to keep things
+simple.  Only two kinds of traces, and only one can run at a time:
+    1) Number of function calls
+    2) Callgraph showing function timings
+
+The output is written to a local file named 'ftrace.log.N' where N is the next
+available unused number not already taken by an existing file in the current
+working directory.
+
+
+Example:
+    // This utility runs both a count and callgraph (timing) trace.
+    // Only one or the other test can be performed, not both
+    // simultaneously.
+    //
+    // Once you desire the trace to end, issue a '--stop' or '-s' to
+    // yoctotrace.py
+    //
+    // The results will be generated to a file named
+    // ftrace.scan.N where N is a number.
+
+    sudo ./yoctotrace.py -c -d /sys/kernel/debug -m my_awesome_module
+
+    ... do some crap ...
+
+    sudo ./ypctotrace.py -s
+
+Resources:
+    https://www.kernel.org/doc/Documentation/trace/ftrace.txt
