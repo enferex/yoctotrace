@@ -39,7 +39,7 @@ debug = True
 
 # Tracer class (one per tracing type)
 class Tracer(object):
-    def __init__(self, description, debugfs_path, ftrace_name, module):
+    def __init__(self, description, debugfs_path, ftrace_name, module=None):
         self.path = debugfs_path
         self.desc = description
         self.module = module
